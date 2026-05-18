@@ -13,13 +13,13 @@ class App {
         return App.instance
     }
 
-    async execute(url) {
+    async execute(url, onProgress = null) {
         if (url.match(scribdRegex.DOMAIN)) {
-            await scribdDownloader.execute(url)
+            await scribdDownloader.execute(url, onProgress)
         } else if (url.match(slideshareRegex.DOMAIN)) {
-            await slideshareDownloader.execute(url)
+            await slideshareDownloader.execute(url, onProgress)
         } else if (url.match(everandRegex.DOMAIN)) {
-            await everandDownloader.execute(url)
+            await everandDownloader.execute(url, onProgress)
         } else {
             throw new Error(`Unsupported URL: ${url}`)
         }

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scribd & SlideShare Downloader</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="#" />
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-icon">⬇️</div>
+            <h1>Scribd & SlideShare Downloader</h1>
+            <p class="subtitle">Unduh dokumen Scribd, SlideShare, atau Podcast Everand secara instan</p>
+        </header>
+
+        <!-- Main Form Card -->
+        <main class="main-card">
+            <form id="download-form">
+                <div class="input-group">
+                    <label for="url-input">Masukkan URL Dokumen</label>
+                    <input 
+                        type="url" 
+                        id="url-input" 
+                        placeholder="https://id.scribd.com/document/... atau https://www.slideshare.net/..." 
+                        required 
+                        autocomplete="off"
+                    >
+                </div>
+                <button type="submit" id="submit-btn" class="primary-btn">
+                    <span>Unduh Dokumen</span>
+                    <div class="loader-spinner hidden"></div>
+                </button>
+            </form>
+        </main>
+
+        <!-- Progress Card (Hidden by default) -->
+        <section id="progress-card" class="progress-card hidden">
+            <h2 class="card-title">Status Pengunduhan</h2>
+            
+            <div class="steps-container">
+                <div class="step-item" id="step-opening">
+                    <div class="step-indicator">1</div>
+                    <div class="step-details">
+                        <h3>Mempersiapkan Browser</h3>
+                        <p class="step-desc">Membuka mesin render Chromium...</p>
+                    </div>
+                </div>
+                <div class="step-item" id="step-processing">
+                    <div class="step-indicator">2</div>
+                    <div class="step-details">
+                        <h3>Menganalisis Dokumen</h3>
+                        <p class="step-desc">Membaca struktur dan dimensi halaman...</p>
+                    </div>
+                </div>
+                <div class="step-item" id="step-rendering">
+                    <div class="step-indicator">3</div>
+                    <div class="step-details">
+                        <h3>Mencetak PDF</h3>
+                        <p class="step-desc">Mengonversi halaman dokumen ke PDF...</p>
+                    </div>
+                </div>
+                <div class="step-item" id="step-merging">
+                    <div class="step-indicator">4</div>
+                    <div class="step-details">
+                        <h3>Menggabungkan Halaman</h3>
+                        <p class="step-desc">Menyatukan seluruh halaman ke file PDF akhir...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terminal Logs -->
+            <div class="logs-container">
+                <div class="logs-header">Log Aktivitas</div>
+                <div id="logs-content" class="logs-content">
+                    <div class="log-line system-log">Menunggu input URL...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Success Result Card (Hidden by default) -->
+        <section id="success-card" class="success-card hidden">
+            <div class="success-icon">🎉</div>
+            <h2>Unduhan Berhasil!</h2>
+            <p id="success-message">Dokumen Anda telah siap dikonversi.</p>
+            <div class="success-actions">
+                <button id="download-file-btn" class="success-btn">Simpan File PDF ke Browser</button>
+                <button id="reset-btn" class="secondary-btn">Unduh Dokumen Lain</button>
+            </div>
+        </section>
+
+        <!-- Error Card (Hidden by default) -->
+        <section id="error-card" class="error-card hidden">
+            <div class="error-icon">⚠️</div>
+            <h2>Terjadi Kesalahan</h2>
+            <p id="error-message">Gagal memproses dokumen.</p>
+            <button id="error-reset-btn" class="secondary-btn">Coba Lagi</button>
+        </section>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Scribd-dl Web GUI &bull; Aman, Cepat, Tanpa Akun &bull; Mengikuti Preferensi Tema OS</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

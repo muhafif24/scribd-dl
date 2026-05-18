@@ -21,12 +21,12 @@ class ScribdDownloader {
         return ScribdDownloader.instance
     }
 
-    async execute(url) {
+    async execute(url, onProgress = null) {
         let fn = this.embedsDefault.bind(this)
         if (url.match(scribdRegex.DOCUMENT)) {
-            await fn(`https://www.scribd.com/embeds/${scribdRegex.DOCUMENT.exec(url)[2]}/content`)
+            await fn(`https://www.scribd.com/embeds/${scribdRegex.DOCUMENT.exec(url)[2]}/content`, onProgress)
         } else if (url.match(scribdRegex.EMBED)) {
-            await fn(url)
+            await fn(url, onProgress)
         } else {
             throw new Error(`Unsupported URL: ${url}`)
         }
@@ -35,17 +35,23 @@ class ScribdDownloader {
     /**
      * Generate PDF by directly printing the pages
      */
-    async embedsDefault(url) {
+    async embedsDefault(url, onProgress = null) {
         const m = scribdRegex.EMBED.exec(url)
         if (!m) {
             throw new Error(`Unsupported URL: ${url}`)
         }
         const id = m[1]
+        
+        if (onProgress) onProgress({ status: 'opening', message: 'Membuka peramban Chromium...' })
         const page = await puppeteerSg.getPage(url)
+        
         try {
+            if (onProgress) onProgress({ status: 'processing', message: 'Menganalisis halaman dokumen...' })
             const {title, pages} = await this.processPage(page);
             const identifier = `${sanitize(filename === "title" ? title : id)}`
             const pdfPath = `${output}/${identifier}.pdf`
+            
+            if (onProgress) onProgress({ status: 'rendering', message: 'Mencetak halaman ke PDF...' })
             if (pages.every(p => p.width === pages[0].width && p.height === pages[0].height)) {
                 await puppeteerSg.generatePDF(page, pdfPath, {
                     width: pages[0].width,
@@ -54,11 +60,17 @@ class ScribdDownloader {
             } else {
                 const tempDir = `${output}/${identifier}_temp`
                 const groups = await this.groupPagesByDimensions(pages)
+                
+                if (onProgress) onProgress({ status: 'rendering', message: 'Mencetak grup halaman...' })
                 const pdfPaths = await this.generatePDFs(page, groups, tempDir);
+                
+                if (onProgress) onProgress({ status: 'merging', message: 'Menggabungkan potongan PDF...' })
                 await pdfGenerator.merge(pdfPaths, pdfPath);
                 directoryIo.remove(tempDir)
             }
+            
             console.log(`Generated: ${pdfPath}`);
+            if (onProgress) onProgress({ status: 'done', message: 'PDF sukses dibuat!', filename: `${identifier}.pdf` })
         } catch (err) {
             throw err;
         } finally {
