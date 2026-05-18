@@ -19,10 +19,10 @@ class PuppeteerSg {
    * Launch a browser
    */
   async launch() {
-    const isCI = process.env.CI === 'true'; // Detect if running in CI
+    const isWin = process.platform === 'win32';
     const args = [];
-    if (isCI) {
-      args.push('--no-sandbox', '--disable-setuid-sandbox');
+    if (!isWin || process.env.CI === 'true') {
+      args.push('--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage');
     }
     this.browser = await puppeteer.launch({
       headless: "new",

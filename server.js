@@ -9,7 +9,7 @@ import { exec } from 'child_process';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const OUTPUT_DIR = configLoader.load("DIRECTORY", "output") || 'output';
 
 const mimeTypes = {
@@ -127,10 +127,14 @@ server.listen(PORT, () => {
     console.log(`[GUI] Server running at ${localUrl}`);
     console.log(`[GUI] Press Ctrl+C to stop the server`);
     
-    // Automatically open the browser on Windows
-    exec(`start ${localUrl}`, (err) => {
-        if (err) {
-            console.log(`[GUI] Please open ${localUrl} manually in your browser.`);
-        }
-    });
+    // Automatically open the browser on Windows only
+    if (process.platform === 'win32') {
+        exec(`start ${localUrl}`, (err) => {
+            if (err) {
+                console.log(`[GUI] Please open ${localUrl} manually in your browser.`);
+            }
+        });
+    } else {
+        console.log(`[GUI] Server is ready for remote connections.`);
+    }
 });
