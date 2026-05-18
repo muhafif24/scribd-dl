@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scribd-dl &mdash; Premium Downloader</title>
+    <title>DocuBypass &mdash; Premium Document Downloader</title>
+    
+    <!-- Premium SVG Favicon Icon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%2318181b'/%3E%3Cpath d='M36 76 L64 100 L92 76 M64 36 L64 96' stroke='%233b82f6' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M30 28 L98 28' stroke='white' stroke-width='8' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -26,7 +30,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Link CSS kustom -->
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="#" />
 </head>
 <body class="bg-background text-foreground antialiased min-h-screen flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
     
@@ -36,8 +39,8 @@
             <div class="w-12 h-12 bg-primary text-primary-foreground flex items-center justify-center rounded-xl shadow-sm mb-3">
                 <i data-lucide="download" class="w-6 h-6 stroke-[1.8]"></i>
             </div>
-            <h1 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">scribd-dl</h1>
-            <p class="text-sm text-muted-foreground mt-1.5">Bypass dan unduh dokumen Scribd, SlideShare, & Everand dalam format PDF premium.</p>
+            <h1 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">DocuBypass</h1>
+            <p class="text-sm text-muted-foreground mt-1.5">Bypass and download Scribd, SlideShare, & Everand documents as premium PDFs.</p>
         </header>
 
         <!-- Shadcn Tabs System -->
@@ -45,15 +48,15 @@
             <div class="grid w-full grid-cols-3 p-1 bg-muted rounded-lg mb-6 text-sm font-medium text-muted-foreground">
                 <button id="tab-download-btn" class="tab-trigger active py-1.5 rounded-md transition-all text-center flex items-center justify-center gap-2">
                     <i data-lucide="file-down" class="w-4 h-4"></i>
-                    <span>Unduh</span>
+                    <span>Download</span>
                 </button>
                 <button id="tab-history-btn" class="tab-trigger py-1.5 rounded-md transition-all text-center flex items-center justify-center gap-2">
                     <i data-lucide="history" class="w-4 h-4"></i>
-                    <span>Riwayat</span>
+                    <span>History</span>
                 </button>
                 <button id="tab-guide-btn" class="tab-trigger py-1.5 rounded-md transition-all text-center flex items-center justify-center gap-2">
                     <i data-lucide="book-open" class="w-4 h-4"></i>
-                    <span>Panduan</span>
+                    <span>Guide</span>
                 </button>
             </div>
 
@@ -64,19 +67,19 @@
                     <div class="flex flex-col space-y-1.5 p-6 border-b border-border">
                         <h3 class="font-semibold tracking-tight text-lg flex items-center gap-2 text-foreground">
                             <i data-lucide="file-text" class="w-5 h-5 text-primary"></i>
-                            <span>Tautan Dokumen</span>
+                            <span>Document Link</span>
                         </h3>
-                        <p class="text-sm text-muted-foreground">Masukkan URL dokumen Scribd atau SlideShare wilayah mana saja untuk memproses file PDF.</p>
+                        <p class="text-sm text-muted-foreground">Enter the URL of any Scribd or SlideShare document to process and generate a premium PDF.</p>
                     </div>
                     
                     <div class="p-6">
                         <form id="download-form" class="space-y-4">
                             <div class="space-y-2">
-                                <label for="url-input" class="text-sm font-medium leading-none text-foreground">URL Scribd / SlideShare</label>
+                                <label for="url-input" class="text-sm font-medium leading-none text-foreground">Scribd / SlideShare URL</label>
                                 <input 
                                     type="url" 
                                     id="url-input" 
-                                    placeholder="https://id.scribd.com/document/... atau https://www.slideshare.net/..."
+                                    placeholder="https://www.scribd.com/document/... or https://www.slideshare.net/..."
                                     required 
                                     autocomplete="off"
                                     class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -84,7 +87,7 @@
                             </div>
                             <button type="submit" id="submit-btn" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full gap-2 shadow-sm">
                                 <i data-lucide="sparkles" class="w-4 h-4"></i>
-                                <span>Unduh PDF Premium</span>
+                                <span>Download Premium PDF</span>
                                 <div class="loader-spinner hidden w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin"></div>
                             </button>
                         </form>
@@ -95,7 +98,7 @@
                 <div id="progress-card" class="rounded-xl border border-border bg-card text-card-foreground shadow-sm mt-4 hidden">
                     <div class="flex flex-col space-y-1.5 p-6 border-b border-border">
                         <div class="flex justify-between items-center">
-                            <h3 class="font-semibold tracking-tight text-lg text-foreground">Proses Pengunduhan</h3>
+                            <h3 class="font-semibold tracking-tight text-lg text-foreground">Downloading Progress</h3>
                             <span id="progress-percent" class="text-sm font-medium text-primary">0%</span>
                         </div>
                         <!-- Shadcn Linear Progress Bar -->
@@ -113,8 +116,8 @@
                                     <i data-lucide="chrome" class="w-3.5 h-3.5"></i>
                                 </div>
                                 <div class="flex-1">
-                                    <h4 class="text-sm font-semibold leading-tight text-foreground">Mempersiapkan Chromium</h4>
-                                    <p class="text-xs text-muted-foreground mt-0.5">Membuka browser engine di server...</p>
+                                    <h4 class="text-sm font-semibold leading-tight text-foreground">Preparing Chromium</h4>
+                                    <p class="text-xs text-muted-foreground mt-0.5">Launching headless browser engine on server...</p>
                                 </div>
                             </div>
                             <!-- Step 2 -->
@@ -123,8 +126,8 @@
                                     <i data-lucide="scan-search" class="w-3.5 h-3.5"></i>
                                 </div>
                                 <div class="flex-1">
-                                    <h4 class="text-sm font-semibold leading-tight text-foreground">Analisis Halaman Dokumen</h4>
-                                    <p class="text-xs text-muted-foreground mt-0.5">Mendeteksi dimensi, text-layer, dan total halaman...</p>
+                                    <h4 class="text-sm font-semibold leading-tight text-foreground">Analyzing Pages</h4>
+                                    <p class="text-xs text-muted-foreground mt-0.5">Detecting dimensions, text-layer, and total pages...</p>
                                 </div>
                             </div>
                             <!-- Step 3 -->
@@ -133,8 +136,8 @@
                                     <i data-lucide="printer" class="w-3.5 h-3.5"></i>
                                 </div>
                                 <div class="flex-1">
-                                    <h4 class="text-sm font-semibold leading-tight text-foreground">Render PDF Grafis</h4>
-                                    <p class="text-xs text-muted-foreground mt-0.5">Mengekspor halaman ke format vector PDF...</p>
+                                    <h4 class="text-sm font-semibold leading-tight text-foreground">Rendering PDF Pages</h4>
+                                    <p class="text-xs text-muted-foreground mt-0.5">Exporting pages to high-resolution vector PDF...</p>
                                 </div>
                             </div>
                             <!-- Step 4 -->
@@ -143,8 +146,8 @@
                                     <i data-lucide="combine" class="w-3.5 h-3.5"></i>
                                 </div>
                                 <div class="flex-1">
-                                    <h4 class="text-sm font-semibold leading-tight text-foreground">Penyatuan Halaman PDF</h4>
-                                    <p class="text-xs text-muted-foreground mt-0.5">Mengompilasi halaman menjadi file PDF utuh...</p>
+                                    <h4 class="text-sm font-semibold leading-tight text-foreground">Compiling PDF</h4>
+                                    <p class="text-xs text-muted-foreground mt-0.5">Merging page fragments into a single complete PDF...</p>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +156,7 @@
                         <div class="rounded-lg border border-border bg-muted/50 overflow-hidden text-xs">
                             <div class="bg-muted px-3 py-1.5 font-bold uppercase tracking-wider text-[10px] text-muted-foreground border-b border-border">Logs</div>
                             <div id="logs-content" class="p-3 font-mono max-h-[100px] overflow-y-auto space-y-1 text-muted-foreground">
-                                <div class="system-log">Menunggu input URL...</div>
+                                <div class="system-log">Waiting for URL input...</div>
                             </div>
                         </div>
                     </div>
@@ -165,16 +168,16 @@
                         <i data-lucide="check-circle-2" class="w-6 h-6"></i>
                     </div>
                     <div>
-                        <h3 class="text-lg font-semibold tracking-tight">Dokumen Berhasil Dibuat!</h3>
-                        <p id="success-message" class="text-sm text-muted-foreground mt-1">File PDF sudah terbuat di folder output server.</p>
+                        <h3 class="text-lg font-semibold tracking-tight">Document Generated!</h3>
+                        <p id="success-message" class="text-sm text-muted-foreground mt-1">Premium PDF is successfully generated and ready to download.</p>
                     </div>
                     <div class="w-full flex flex-col gap-2 mt-2">
                         <button id="download-file-btn" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors bg-success text-white hover:bg-success/90 h-10 px-4 py-2 w-full gap-2 shadow-sm">
                             <i data-lucide="file-down" class="w-4 h-4"></i>
-                            <span>Simpan File ke Komputer</span>
+                            <span>Save PDF to Device</span>
                         </button>
                         <button id="reset-btn" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground h-10 px-4 py-2 w-full">
-                            Unduh Dokumen Lain
+                            Download Another Document
                         </button>
                     </div>
                 </div>
@@ -185,11 +188,11 @@
                         <i data-lucide="alert-triangle" class="w-6 h-6"></i>
                     </div>
                     <div>
-                        <h3 class="text-lg font-semibold tracking-tight">Gagal Mengunduh Dokumen</h3>
-                        <p id="error-message" class="text-sm text-muted-foreground mt-1">Tidak dapat terhubung atau format dokumen tidak dikenali.</p>
+                        <h3 class="text-lg font-semibold tracking-tight">Failed to Download Document</h3>
+                        <p id="error-message" class="text-sm text-muted-foreground mt-1">Invalid link format or server failed to render pages.</p>
                     </div>
                     <button id="error-reset-btn" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground h-10 px-4 py-2 w-full mt-2">
-                        Coba Lagi
+                        Try Again
                     </button>
                 </div>
             </div>
@@ -200,16 +203,16 @@
                     <div class="flex flex-col space-y-1.5 p-6 border-b border-border">
                         <h3 class="font-semibold tracking-tight text-lg flex items-center gap-2 text-foreground">
                             <i data-lucide="history" class="w-5 h-5 text-primary"></i>
-                            <span>Riwayat Unduhan</span>
+                            <span>Download History</span>
                         </h3>
-                        <p class="text-sm text-muted-foreground">Daftar file PDF yang berhasil diunduh dalam sesi browser saat ini.</p>
+                        <p class="text-sm text-muted-foreground">List of premium PDF files generated during your current browser session.</p>
                     </div>
                     <div class="p-6">
                         <ul id="history-list" class="divide-y divide-border space-y-3 max-h-[300px] overflow-y-auto pr-1">
                             <!-- Placeholder when history is empty -->
                             <li id="history-empty" class="text-center py-6 text-sm text-muted-foreground">
                                 <i data-lucide="folder-open" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
-                                <span>Belum ada riwayat unduhan dokumen.</span>
+                                <span>No download history found.</span>
                             </li>
                         </ul>
                     </div>
@@ -222,23 +225,23 @@
                     <div class="flex flex-col space-y-1.5 p-6 border-b border-border">
                         <h3 class="font-semibold tracking-tight text-lg flex items-center gap-2 text-foreground">
                             <i data-lucide="help-circle" class="w-5 h-5 text-primary"></i>
-                            <span>Panduan Penggunaan</span>
+                            <span>User Guide</span>
                         </h3>
-                        <p class="text-sm text-muted-foreground">Cara mudah mengunduh dokumen secara aman.</p>
+                        <p class="text-sm text-muted-foreground">Simple instructions to download documents safely.</p>
                     </div>
                     <div class="p-6 space-y-4 text-sm text-muted-foreground">
                         <div class="space-y-2">
-                            <h4 class="font-medium text-foreground text-sm">Tautan yang Didukung:</h4>
+                            <h4 class="font-medium text-foreground text-sm">Supported Links:</h4>
                             <ul class="list-disc pl-5 space-y-1 text-xs">
-                                <li><strong>Dokumen Scribd:</strong> Tautan regional seperti <code>https://id.scribd.com/document/...</code> atau domain utama <code>https://www.scribd.com/document/...</code></li>
-                                <li><strong>Scribd Embeds:</strong> Tautan sematan seperti <code>https://www.scribd.com/embeds/.../content</code></li>
-                                <li><strong>SlideShare:</strong> Presentasi SlideShare seperti <code>https://www.slideshare.net/...</code></li>
+                                <li><strong>Scribd Documents:</strong> Regional URLs like <code>https://id.scribd.com/document/...</code> or main domain <code>https://www.scribd.com/document/...</code></li>
+                                <li><strong>Scribd Embeds:</strong> Embedded viewer links like <code>https://www.scribd.com/embeds/.../content</code></li>
+                                <li><strong>SlideShare Presentations:</strong> SlideShare slides like <code>https://www.slideshare.net/...</code></li>
                             </ul>
                         </div>
                         <div class="space-y-2 pt-2 border-t border-border/55">
-                            <h4 class="font-medium text-foreground text-sm">Bagaimana Cara Kerjanya?</h4>
+                            <h4 class="font-medium text-foreground text-sm">How does it work?</h4>
                             <p class="text-xs leading-relaxed">
-                                Aplikasi ini menggunakan Chromium headless (Puppeteer) di backend untuk secara otomatis membuka tautan dokumen yang Anda masukkan, mensimulasikan pembukaan halaman dokumen, mendeteksi ukuran/dimensi dokumen, merendernya dalam format PDF grafis beresolusi tinggi, lalu menggabungkannya ke dalam satu file PDF premium yang siap unduh secara instan!
+                                This application utilizes a headless Chromium engine (Puppeteer) in the backend to automatically open the document URL you entered, simulate page views, detect document dimensions, render each page as a high-resolution vector PDF, and merge them into a single high-quality premium PDF ready for instant download!
                             </p>
                         </div>
                     </div>
@@ -251,7 +254,7 @@
 
         <!-- Footer -->
         <footer class="text-center text-xs text-muted-foreground">
-            <p>scribd-dl GUI v1.1.0 &bull; Shadcn Flat Design &bull; OS Auto-Theme Sync</p>
+            <p>DocuBypass v1.1.0 &bull; Shadcn Flat Design &bull; OS Auto-Theme Sync</p>
         </footer>
     </div>
 

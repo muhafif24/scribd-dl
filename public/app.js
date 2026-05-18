@@ -140,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return raw ? JSON.parse(raw) : [];
     }
 
+    // Save generated file to browser local storage history
     function saveToHistory(filename, url) {
         const history = getHistory();
         const existing = history.findIndex(item => item.filename === filename);
@@ -148,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         history.unshift({
             filename,
             url,
-            date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+            date: new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
         });
         localStorage.setItem('scribd_dl_history', JSON.stringify(history));
     }
@@ -158,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         history.splice(index, 1);
         localStorage.setItem('scribd_dl_history', JSON.stringify(history));
         renderHistory();
-        showToast('Riwayat Dihapus', 'Dokumen berhasil dihapus dari daftar riwayat lokal Anda.', 'success');
+        showToast('History Deleted', 'The document has been removed from your local history list.', 'success');
     }
 
     function renderHistory() {
@@ -189,10 +190,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 <div class="flex gap-2 shrink-0">
-                    <button class="history-download-btn inline-flex items-center justify-center rounded-md bg-secondary text-secondary-foreground hover:bg-muted text-xs font-semibold h-8 w-8" title="Simpan File">
+                    <button class="history-download-btn inline-flex items-center justify-center rounded-md bg-secondary text-secondary-foreground hover:bg-muted text-xs font-semibold h-8 w-8" title="Save File">
                         <i data-lucide="download" class="w-4 h-4"></i>
                     </button>
-                    <button class="history-delete-btn inline-flex items-center justify-center rounded-md bg-destructive/10 text-destructive hover:bg-destructive/20 text-xs font-semibold h-8 w-8" title="Hapus Riwayat">
+                    <button class="history-delete-btn inline-flex items-center justify-center rounded-md bg-destructive/10 text-destructive hover:bg-destructive/20 text-xs font-semibold h-8 w-8" title="Delete History">
                         <i data-lucide="trash" class="w-4 h-4"></i>
                     </button>
                 </div>
@@ -260,11 +261,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset button
         submitBtn.disabled = false;
         spinner.classList.add('hidden');
-        btnText.textContent = 'Unduh PDF Premium';
+        btnText.textContent = 'Download Premium PDF';
         
         urlInput.value = '';
         currentDownloadedFilename = null;
-        logsContent.innerHTML = '<div class="log-line system-log">Menunggu input URL...</div>';
+        logsContent.innerHTML = '<div class="log-line system-log">Waiting for URL input...</div>';
 
         // Reset progress bar
         progressBarFill.style.width = '0%';
@@ -289,11 +290,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         submitBtn.disabled = true;
         spinner.classList.remove('hidden');
-        btnText.textContent = 'Memproses...';
+        btnText.textContent = 'Processing...';
 
         logsContent.innerHTML = '';
-        addLog('Menginisialisasi koneksi pengunduh web...');
-        showToast('Memulai Unduhan', 'Dokumen sedang dikoneksikan ke server. Harap tunggu...', 'success');
+        addLog('Initializing connection with downloader engine...');
+        showToast('Starting Download', 'Connecting to the document server. Please wait...', 'success');
 
         // SSE Connection
         const sseUrl = `/api/download?url=${encodeURIComponent(url)}`;
@@ -319,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         eventSource.onerror = (err) => {
             console.error('[SSE] Connection lost:', err);
-            handleError('Koneksi terputus ke server lokal. Pastikan server masih berjalan di hosting.');
+            handleError('Connection lost. Please make sure the server is running on the host.');
         };
     });
 
@@ -348,12 +349,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Save to browser history tab
         saveToHistory(filename, originalUrl);
 
-        showToast('Sukses Dibuat!', `Dokumen "${filename}" berhasil tergenerasi.`, 'success');
+        showToast('Success!', `Document "${filename}" has been generated successfully.`, 'success');
 
         setTimeout(() => {
             progressCard.classList.add('hidden');
             successCard.classList.remove('hidden');
-            successMessage.textContent = `Dokumen "${filename}" berhasil diproses dan dikonversi ke PDF secara utuh.`;
+            successMessage.textContent = `Document "${filename}" has been successfully processed and converted to a complete PDF.`;
         }, 1100);
     }
 
@@ -364,13 +365,13 @@ document.addEventListener('DOMContentLoaded', () => {
             eventSource = null;
         }
 
-        addLog(`Kesalahan: ${message}`, 'error-log');
-        showToast('Kesalahan Sistem', message || 'Terjadi kegagalan saat memproses unduhan.', 'error');
+        addLog(`Error: ${message}`, 'error-log');
+        showToast('System Error', message || 'Failed to process the document download.', 'error');
 
         setTimeout(() => {
             progressCard.classList.add('hidden');
             errorCard.classList.remove('hidden');
-            errorMessage.textContent = message || 'Format link salah atau server gagal merender halaman PDF.';
+            errorMessage.textContent = message || 'Invalid link format or server failed to render pages.';
         }, 1100);
     }
 
